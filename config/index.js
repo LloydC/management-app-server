@@ -19,7 +19,7 @@ module.exports = (app) => {
 
   app.use(
     cors({
-      origin: [`${process.env.ORIGIN}`],
+      origin: [`${process.env.DEPLOY_ORIGIN}`, `${process.env.LOCAL_ORIGIN}`],
     })
   );
 
