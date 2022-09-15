@@ -7,11 +7,19 @@ const Task = require("../models/Task.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware")
 
-//  POST /api/projects  -  Creates a new project
-router.post("/projects", isAuthenticated, (req, res, next) => {
-  const { title, description } = req.body;
+const fileUploader = require("../config/cloudinary.config");
 
-  Project.create({ title, description, tasks: [] })
+//  POST /api/projects  -  Creates a new project
+router.post("/projects", [isAuthenticated, fileUploader.single("imageUrl")], (req, res, next) => {
+  const { title, description } = req.body;
+  console.log("file is: ", req.file)
+
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+
+  Project.create({ title, description, imageUrl: req.file.path, tasks: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
