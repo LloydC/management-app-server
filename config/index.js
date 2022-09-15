@@ -18,9 +18,7 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   app.use(
-    cors({
-      origin: [`${process.env.DEPLOY_ORIGIN}`, `${process.env.LOCAL_ORIGIN}`],
-    })
+    cors()
   );
 
   // In development environment the app logs
